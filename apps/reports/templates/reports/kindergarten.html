@@ -1,0 +1,12 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@page { size: A4; margin: 18mm; } body { font-family: sans-serif; color: #243447; font-size: 11pt; }
+.header { display:flex; align-items:center; border-bottom:3px solid #4b7bec; padding-bottom:12px; } .logo { width:72px; height:72px; object-fit:contain; margin-right:16px; }
+h1 { margin:0; color:#1f4e79; } .muted { color:#667; } table { width:100%; border-collapse:collapse; margin-top:22px; } th,td { border:1px solid #b8c7d9; padding:9px; } th { background:#eaf2fb; text-align:left; }
+.summary { margin-top:18px; padding:12px; background:#f7f9fc; } .footer { margin-top:36px; display:flex; justify-content:space-between; align-items:end; } .signature,.stamp { max-width:130px; max-height:70px; }
+</style></head><body><div class="header">{% if logo_uri %}<img class="logo" src="{{ logo_uri }}">{% endif %}<div><h1>{{ school.name }}</h1><div class="muted">Kindergarten Progress Report · {{ report_card.report_period.name }}</div></div></div>
+<p><strong>Student:</strong> {{ student.full_name }} &nbsp; <strong>ID:</strong> {{ student.student_id }}<br><strong>Class:</strong> {{ enrollment.class_section }}</p>
+<table><thead><tr><th>Learning Area</th><th>Grade</th><th>Distinction</th></tr></thead><tbody>{% for line in version.lines.all %}<tr><td>{{ line.subject_name }}</td><td>{{ line.grade_code }}</td><td>{{ line.distinction|default:'—' }}</td></tr>{% endfor %}</tbody></table>
+{% if attendance %}<div class="summary"><strong>Attendance:</strong> Present {{ attendance.present_days }} / {{ attendance.total_school_days }} days{% if attendance.attendance_percentage %} ({{ attendance.attendance_percentage }}%){% endif %}; Absent {{ attendance.absent_days }}; Late {{ attendance.late_days }}.</div>{% endif %}
+{% if version.teacher_comment %}<p><strong>Teacher comment:</strong> {{ version.teacher_comment }}</p>{% endif %}{% if version.principal_comment %}<p><strong>Principal comment:</strong> {{ version.principal_comment }}</p>{% endif %}
+<div class="footer"><div>Teacher: ____________________</div>{% if signature_uri %}<img class="signature" src="{{ signature_uri }}">{% else %}<div>Principal: ____________________</div>{% endif %}{% if stamp_uri %}<img class="stamp" src="{{ stamp_uri }}">{% endif %}{% if qr_image %}<img class="stamp" src="{{ qr_image }}">{% endif %}</div>
+</body></html>
